@@ -2,22 +2,30 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-import { Input, Button } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { Button, Input } from '@mui/material';
+import { useForm, FormProvider } from 'react-hook-form';
 import { FormContainer } from './Common';
 
-function SearchBar() {
-  const { control, handleSubmit } = useForm({
+// eslint-disable-next-line react/prop-types
+function SearchBar({ submit }) {
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: {
       searchBand: ''
     }
   });
-  const onSubmit = (data) => console.log(data);
+
+  const { handleSubmit } = methods;
 
   return (
-    <FormContainer onSubmit={handleSubmit(onSubmit)}>
-      <Controller name="firstName" control={control} render={({ field }) => <Input {...field} />} />
-      <Button type="submit" variant="contained">Search</Button>
+    <FormContainer onSubmit={handleSubmit(submit)}>
+      <FormProvider {...methods}>
+        <Input name="search" aria-label="Searching band name" label="Searching band" />
+      </FormProvider>
+      <Button type="submit" variant="contained" onClick={handleSubmit(submit)}>
+        Search
+      </Button>
     </FormContainer>
   );
 }

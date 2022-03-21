@@ -1,13 +1,13 @@
 import React from 'react';
 import ListOfProductsContainer from './containers/ListOfProducts';
 import './App.css';
-import SearchBar from './components/SearchBar';
+import SearchBarContainer from './containers/SearchBar';
 import { WrapContainer } from './components/Common';
 
 function App() {
   return (
     <WrapContainer>
-      <SearchBar />
+      <SearchBarContainer />
       <ListOfProductsContainer />
     </WrapContainer>
   );

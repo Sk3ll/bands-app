@@ -5,19 +5,20 @@ import { bandRequest, bandSuccess, bandFailure } from '../tools/actionHandlers/b
 class BandsService {
   searchUrl = `https://itunes.apple.com/search`;
 
-  minimalIndex = 5;
+  limit = 5;
 
   products;
 
   searchBands = (term) => async (dispatch) => {
     dispatch(bandRequest());
     try {
-      const url = `${this.searchUrl}?term=${term}`;
-      const response = await axios.get(url);
+      const url = new URL(this.searchUrl);
+      url.search = new URLSearchParams({ limit: this.limit, term });
+      const {
+        data: { results }
+      } = await axios.get(url);
 
-      console.log('fetch', response);
-      this.products = response.results;
-
+      this.products = results;
       dispatch(bandSuccess(this.getProducts()));
     } catch (e) {
       dispatch(bandFailure(e.message));
@@ -25,14 +26,11 @@ class BandsService {
   };
 
   getProducts = () =>
-    this.products.filter((_, index) => this.isMinimalItems(index)).map(this.getCollectionName);
-
-  searchProducts = (searchParams) =>
     this.products
-      .filter((product, index) => product.includes(searchParams) && this.isMinimalItems(index))
+      .filter(({ collectionName }, index) => collectionName && this.isMinimalItems(index))
       .map(this.getCollectionName);
 
-  isMinimalItems = (currentIndex) => currentIndex < this.minimalIndex;
+  isMinimalItems = (currentIndex) => currentIndex < this.limit;
 
   getCollectionName = ({ collectionName }) => collectionName;
 }
