@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import SearchBarComponent from '../components/SearchBar';
-import searchBands from '../services/bandsService';
+import searchBands from '../thunks/bands';
 
 const SearchBarContainer = () => {
   const dispatch = useDispatch();
