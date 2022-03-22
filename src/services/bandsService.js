@@ -1,13 +1,10 @@
-/* eslint-disable class-methods-use-this, consistent-return */
 import axios from 'axios';
-import { bandRequest, bandSuccess, bandFailure } from '../tools/actionHandlers/bandActionHanlders';
+import { bandRequest, bandSuccess, bandFailure } from '../redux/actionHandlers/bandActionHanlders';
 
 class BandsService {
   searchUrl = `https://itunes.apple.com/search`;
 
   limit = 5;
-
-  products;
 
   searchBands = (term) => async (dispatch) => {
     dispatch(bandRequest());
@@ -18,21 +15,12 @@ class BandsService {
         data: { results }
       } = await axios.get(url);
 
-      this.products = results;
-      dispatch(bandSuccess(this.getProducts()));
+      const mappedResults = results.map(({ collectionName }) => collectionName);
+      dispatch(bandSuccess(mappedResults));
     } catch (e) {
       dispatch(bandFailure(e.message));
     }
   };
-
-  getProducts = () =>
-    this.products
-      .filter(({ collectionName }, index) => collectionName && this.isMinimalItems(index))
-      .map(this.getCollectionName);
-
-  isMinimalItems = (currentIndex) => currentIndex < this.limit;
-
-  getCollectionName = ({ collectionName }) => collectionName;
 }
 
 export default new BandsService();

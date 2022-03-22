@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies, react/no-array-index-key, import/named */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Stack } from '@mui/material';

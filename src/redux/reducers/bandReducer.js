@@ -1,5 +1,4 @@
-import { useReducer } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import React, { useReducer } from 'react';
 import logger from 'use-reducer-logger';
 import BandActions from '../actions/bandActions';
 
@@ -40,5 +39,8 @@ function useBandReducer() {
 
   return [bandState, dispatchThunk];
 }
+
+export const GlobalDispatch = React.createContext(() => {});
+export const GlobalState = React.createContext([]);
 
 export default useBandReducer;

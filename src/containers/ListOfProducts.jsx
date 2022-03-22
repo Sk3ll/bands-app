@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import ListOfProductsComponent from '../components/ListOfProducts';
 import rotatePosition from '../utils/rotatePosition';
-import useBandReducer from '../tools/reducers/bandReducer';
+import { GlobalState } from '../redux/reducers/bandReducer';
 
 function ListOfProductsContainer() {
-  const [{ data }] = useBandReducer();
+  const { data } = useContext(GlobalState);
   const [products, setProducts] = useState(['A', 'B', 'C', 'D', 'F']);
 
   useEffect(() => {
-    setProducts(rotatePosition([...products, ...data]));
-  }, [data]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setProducts(rotatePosition(products));
+    const intervalId = setInterval(() => {
+      setProducts(rotatePosition(products, data));
     }, 1000);
-  }, [products]);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [products, data]);
 
   return <ListOfProductsComponent products={products} />;
 }
