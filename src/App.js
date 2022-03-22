@@ -1,21 +1,17 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { WrapContainer } from './components/Common';
-import useBandReducer, { GlobalDispatch, GlobalState } from './redux/reducers/bandReducer';
 import ListOfProductsContainer from './containers/ListOfProducts';
 import SearchBarContainer from './containers/SearchBar';
+import store from './redux/store';
 
-function App() {
-  const [state, dispatch] = useBandReducer();
-  return (
-    <GlobalDispatch.Provider value={dispatch}>
-      <GlobalState.Provider value={state}>
-        <WrapContainer>
-          <SearchBarContainer />
-          <ListOfProductsContainer />
-        </WrapContainer>
-      </GlobalState.Provider>
-    </GlobalDispatch.Provider>
-  );
-}
+const App = () => (
+  <Provider store={store}>
+    <WrapContainer>
+      <SearchBarContainer />
+      <ListOfProductsContainer />
+    </WrapContainer>
+  </Provider>
+);
 
 export default App;

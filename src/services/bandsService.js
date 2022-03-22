@@ -1,26 +1,22 @@
 import axios from 'axios';
-import { bandRequest, bandSuccess, bandFailure } from '../redux/actionHandlers/bandActionHanlders';
+import { bandSuccess, bandFailure } from '../redux/actionHandlers/bandActionHanlders';
 
-class BandsService {
-  searchUrl = `https://itunes.apple.com/search`;
+const searchUrl = `https://itunes.apple.com/search`;
+const limit = 5;
 
-  limit = 5;
+const searchBands = (term) => async (dispatch) => {
+  try {
+    const url = new URL(searchUrl);
+    url.search = new URLSearchParams({ limit, term });
+    const {
+      data: { results }
+    } = await axios.get(url);
 
-  searchBands = (term) => async (dispatch) => {
-    dispatch(bandRequest());
-    try {
-      const url = new URL(this.searchUrl);
-      url.search = new URLSearchParams({ limit: this.limit, term });
-      const {
-        data: { results }
-      } = await axios.get(url);
+    const mappedResults = results.map(({ collectionName }) => collectionName);
+    dispatch(bandSuccess(mappedResults));
+  } catch (e) {
+    dispatch(bandFailure(e.message));
+  }
+};
 
-      const mappedResults = results.map(({ collectionName }) => collectionName);
-      dispatch(bandSuccess(mappedResults));
-    } catch (e) {
-      dispatch(bandFailure(e.message));
-    }
-  };
-}
-
-export default new BandsService();
+export default searchBands;

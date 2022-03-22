@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ListOfProductsComponent from '../components/ListOfProducts';
 import rotatePosition from '../utils/rotatePosition';
-import { GlobalState } from '../redux/reducers/bandReducer';
 
-function ListOfProductsContainer() {
-  const { data } = useContext(GlobalState);
+const ListOfProductsContainer = () => {
+  const { data } = useSelector((state) => state);
   const [products, setProducts] = useState(['A', 'B', 'C', 'D', 'F']);
 
   useEffect(() => {
@@ -18,6 +18,6 @@ function ListOfProductsContainer() {
   }, [products, data]);
 
   return <ListOfProductsComponent products={products} />;
-}
+};
 
 export default ListOfProductsContainer;

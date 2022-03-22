@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import SearchBarComponent from '../components/SearchBar';
-import BandsService from '../services/bandsService';
-import { GlobalDispatch } from '../redux/reducers/bandReducer';
+import searchBands from '../services/bandsService';
 
-function SearchBarContainer() {
-  const dispatch = useContext(GlobalDispatch);
+const SearchBarContainer = () => {
+  const dispatch = useDispatch();
   const { handleSubmit, control } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -15,10 +15,10 @@ function SearchBarContainer() {
   });
 
   const submit = ({ searchBand }) => {
-    dispatch(BandsService.searchBands(searchBand));
+    dispatch(searchBands(searchBand));
   };
 
-  return <SearchBarComponent submit={submit} handleSubmit={handleSubmit} control={control} />;
-}
+  return <SearchBarComponent submit={handleSubmit(submit)} control={control} />;
+};
 
 export default SearchBarContainer;
