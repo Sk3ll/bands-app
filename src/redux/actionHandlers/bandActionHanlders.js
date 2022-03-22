@@ -1,4 +1,4 @@
-import BandActions from "../actions/bandActions";
+import BandActions from '../actions/bandActions';
 
 export const bandRequest = () => ({ type: BandActions.REQUEST });
 

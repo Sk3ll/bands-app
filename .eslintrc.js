@@ -19,6 +19,6 @@ module.exports = {
     'import/named': 'off',
     'react/no-array-index-key': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'class-methods-use-this': 'off',
+    'class-methods-use-this': 'off'
   }
 };
